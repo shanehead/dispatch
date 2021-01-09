@@ -3,6 +3,7 @@ import faker
 from mypy_boto3.sqs.service_resource import Queue
 import os
 import pytest
+from typing import Tuple
 
 from dispatch.spec import Message
 
@@ -10,7 +11,7 @@ os.environ["SETTINGS_MODULE"] = "tests/test.yaml"
 
 
 @pytest.fixture
-def queue() -> Queue:
+def queue() -> Tuple[Queue, str]:
     name = "test_queue" + faker.Faker().word()
     queue = utils.create_queue(name)
     assert queue is not None
