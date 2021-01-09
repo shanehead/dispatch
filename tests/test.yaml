@@ -1,0 +1,27 @@
+aws:
+  sqs:
+    endpoint: "https://sqs.us-east-2.amazonaws.com"
+    connect_timeout: 2.0
+    poll_time: 2
+    visibility_timeout: 60
+
+# Tasks to make available to workers.
+tasks:
+  - tests.tasks.test_tasks
+  - tests.tasks.sub1.sub1_tasks
+
+# Routing for tasks to queues for producers
+# Keys are python modules.  To route a specific method in that module, use ::
+routes:
+  # Routes are chosen based on longest match
+  tests.tasks.test_tasks: test_tasks
+  tests.tasks.test_tasks::cube: cube_tasks
+  tests.tasks.sub1.sub1_tasks: sub1_tasks
+  test_task_name: fn_task
+
+# Databases to connect to
+dbs:
+  - sofi
+  - galileo
+
+synchronous: False
